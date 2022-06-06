@@ -1,0 +1,10 @@
+services:
+  crwn-clothing:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/app/src
+    # environment:
+    #   ENV for windows
+    #   - CHOKIDAR_USEPOLLING=true
