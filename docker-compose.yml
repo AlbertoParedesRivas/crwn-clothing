@@ -1,7 +1,7 @@
 services:
-  crwn-clothing:
-    build: .
-    ports:
-      - 3000:3000
-    volumes:
-      - ./src:/app/src
+    crwn-clothing:
+        build: .
+        ports:
+            - 3000:3000
+        volumes:
+            - ./src:/app/src

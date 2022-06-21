@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../util/firebase/firebase.util";
+import {
+    createAuthUserWithEmailAndPassword,
+    createUserDocumentFromAuth,
+} from "../../util/firebase/firebase.util";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import "./sign-up-form.styles.scss";
@@ -8,8 +11,8 @@ const defaultFormFields = {
     displayName: "",
     email: "",
     password: "",
-    confirmPassword: ""
-}
+    confirmPassword: "",
+};
 
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
@@ -17,40 +20,45 @@ const SignUpForm = () => {
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
-    }
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if(password != confirmPassword){
+        if (password != confirmPassword) {
             alert("Passwords do not match");
             return;
         }
         try {
-            const {user} = await createAuthUserWithEmailAndPassword(email, password);
-            const userDocRef = await createUserDocumentFromAuth(user, {displayName});
+            const { user } = await createAuthUserWithEmailAndPassword(
+                email,
+                password
+            );
+            const userDocRef = await createUserDocumentFromAuth(user, {
+                displayName,
+            });
             resetFormFields();
         } catch (error) {
-            if(error.code == "auth/email-already-in-use"){
+            if (error.code == "auth/email-already-in-use") {
                 alert("Cannot create user, email already in use.");
             }
-            if(error.code == "auth/weak-password"){
+            if (error.code == "auth/weak-password") {
                 alert("Password must be at least 6 characters.");
             }
             console.log("User creation encountered an erroe" + error.message);
         }
     };
 
-    const handleChange = event => {
-        const {name, value} = event.target;
-        setFormFields({...formFields, [name]: value});
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormFields({ ...formFields, [name]: value });
     };
     return (
         <div className="sign-up-container">
             <h2>Don't have an account?</h2>
             <span>Sign up with email and password</span>
             <form onSubmit={handleSubmit}>
-                <FormInput 
+                <FormInput
                     label="Display Name"
                     type="text"
                     name="displayName"
@@ -58,7 +66,7 @@ const SignUpForm = () => {
                     value={displayName}
                     required
                 />
-                <FormInput 
+                <FormInput
                     label="Email"
                     type="email"
                     name="email"
@@ -66,7 +74,7 @@ const SignUpForm = () => {
                     value={email}
                     required
                 />
-                <FormInput 
+                <FormInput
                     label="Password"
                     type="password"
                     name="password"
@@ -74,7 +82,7 @@ const SignUpForm = () => {
                     value={password}
                     required
                 />
-                <FormInput 
+                <FormInput
                     label="Confirm Password"
                     type="password"
                     name="confirmPassword"
@@ -86,6 +94,6 @@ const SignUpForm = () => {
             </form>
         </div>
     );
-}
+};
 
 export default SignUpForm;
